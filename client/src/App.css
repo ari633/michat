@@ -1,0 +1,172 @@
+.App {
+  position: relative;
+  background-color: #FFFFFF;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 16px;
+  height: 100vh;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100% - 100px);
+}
+
+.flex-space {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  text-align: center;
+  font-size: 30px;
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.group-new-input {
+  position: relative;
+}
+
+.form-group p {
+  color: 12px;
+  color: #FF0000;
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #E8E8E8;
+  padding: 16px;
+  background-color: #F6F6F6;
+}
+
+.new-input {
+  border-radius: 40px;
+}
+
+.button {
+  font-size: 16px;
+  padding: 16px 0;
+  color: #FFFFFF;
+  background-color: #5DB075;
+  display: inline-block;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.button-send {
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  border: 1px solid transparent;
+  background-color: #5DB075;
+  cursor: pointer;
+  color: #FFFFFF;
+  position: absolute;
+  margin-top: 10px;
+  margin-right: 10px;
+  top: 0;
+  right: 0;
+}
+
+.button-send:disabled {
+  cursor: auto;
+  color: #E8E8E8;
+  opacity: .65;
+}
+
+.button-nude {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #5DB075;
+  font-size: 16px;
+}
+
+.button:disabled {
+  cursor: auto;
+  color: #E8E8E8;
+  opacity: .65;
+}
+
+.messages {
+  overflow: scroll;
+  height: calc(100% - 150px);
+}
+
+.card {
+  max-width: calc(400px - 30%);
+  margin-bottom: 40px;
+  word-break: break-all;
+}
+
+.card-mymessage {
+  background-color: #5DB075;
+  padding: 16px;
+  border-radius: 10px 10px 0px 10px;
+  color: #ffffff;
+  position: relative;
+}
+
+.card-mymessage::after {
+  content: " ";
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-top: 20px solid #5DB075;
+  position: absolute;
+  right: 0;
+  margin-top: 15px;
+}
+
+.flex-mymessage {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.card-message {
+  background-color: #F6F6F6;
+  padding: 16px;
+  border-radius: 10px 10px 10px 0px;
+  border: 1px solid #E8E8E8;
+  color: #000;
+  position: relative;
+}
+
+.card-message::after {
+  content: " ";
+  display: block;
+  border-right: 20px solid transparent;
+  border-top: 20px solid #F6F6F6;
+  position: absolute;
+  left: 0;
+  margin-top: 15px;
+}
+
+.card-message::before {
+  content: " ";
+  display: block;
+  border-right: 22px solid transparent;
+  border-top: 22px solid #E8E8E8;
+  position: absolute;
+  bottom: -21px;
+  left: 0;
+  margin-left: -1px;
+}
+
+.flex-message {
+  display: flex;
+  justify-content: flex-start;
+}
