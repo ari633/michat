@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../context/socket";
 
-const sessionId = localStorage.getItem("sessionId");
 
 export function ConnectionManager() {
   const [username, setUsername] = useState("");
@@ -11,6 +10,7 @@ export function ConnectionManager() {
 
   useEffect(() => {
     setTimeout(() => {
+      const sessionId = localStorage.getItem("sessionId");
       if (sessionId) {
         const user = { sessionId };
         doConnect(user);

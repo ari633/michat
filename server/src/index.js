@@ -5,7 +5,15 @@ import { v4 as uuidv4 } from "uuid";
 import "dotenv/config";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { db } from "./db/conn";
+import {
+  addNewRoom,
+  deleteSessionByUsernameRoom,
+  getSession,
+  newSession,
+  addNewMessage,
+  getPrevMessage,
+  getUserInRoom
+} from "./repo/session";
 
 const PORT = process.env.PORT || 9090;
 
@@ -29,18 +37,13 @@ io.use(async (socket, next) => {
   const roomId = socket.handshake.auth.roomId;
   const sessionId = socket.handshake.auth.sessionId;
 
+  /**
+   * Add new room if not exist
+   */
+  await addNewRoom(roomId);
 
-  const collectionRoom = (await db()).collection("rooms");
-  const findRoom = await collectionRoom.findOne({ room_id: roomId });
-  if (!findRoom) {
-    collectionRoom.insertOne({
-      room_id: roomId
-    })
-  }
-
-  const collection = (await db()).collection("sessions");
   if (sessionId) {
-    const session = await collection.findOne({ session_id: sessionId });
+    const session = await getSession(sessionId);
     if (session) {
       socket.sessionId = sessionId;
       socket.username = session.username;
@@ -53,10 +56,7 @@ io.use(async (socket, next) => {
     return next(new Error("invalid username"));
   }
 
-  const isUserExistInRoom = await collection.findOne({
-    username: username,
-    room_id: roomId,
-  });
+  const isUserExistInRoom = await getUserInRoom(username, roomId);
 
   if (isUserExistInRoom) {
     return next(new Error("Username already exist in room"));
@@ -66,11 +66,7 @@ io.use(async (socket, next) => {
   const newUsername = username;
   const newRoomId = roomId;
 
-  collection.insertOne({
-    session_id: newSessionId,
-    username: newUsername,
-    room_id: newRoomId,
-  });
+  await newSession(newSessionId, newUsername, newRoomId);
 
   socket.sessionId = newSessionId;
   socket.username = newUsername;
@@ -84,52 +80,55 @@ app.get("/", async (req, res) => {
 });
 
 io.on("connection", async (socket) => {
+  const roomId = socket.roomId;
+  const username = socket.username;
+  const sessionId = socket.sessionId;
 
-  let roomsCollection = (await db()).collection("rooms");
-  const prevMessages = await roomsCollection.findOne({room_id: socket.roomId});
+  const prevMessages = await getPrevMessage(roomId);
+
   socket.emit("session", {
-    sessionId: socket.sessionId,
-    roomId: socket.roomId,
-    username: socket.username,
-    prevMessages: prevMessages.messages
+    sessionId: sessionId,
+    roomId: roomId,
+    username: username,
+    prevMessages: prevMessages.messages,
   });
 
   socket.join(socket.roomId);
 
   console.log("user connect", {
-    roomId: socket.roomId,
-    username: socket.username,
-    sessionId: socket.sessionId,
+    roomId: roomId,
+    username: username,
+    sessionId: sessionId,
   });
 
   socket.on("message_room", async ({ value, roomId }) => {
     const newMessage = {
       text: value,
-      from: socket.username,
+      from: username,
     };
 
     console.log("new message", newMessage);
 
     const updates = {
-      $push: { messages: newMessage }
+      $push: { messages: newMessage },
     };
 
-    await roomsCollection.updateOne({room_id: roomId}, updates);
+    await addNewMessage(roomId, updates);
 
-    io.to(roomId).emit("message_room", { text: value, from: socket.username });
+    io.to(roomId).emit("message_room", { text: value, from: username });
   });
 
   socket.on("exit_session", async () => {
-    const collection = (await db()).collection("sessions");
-    const result = await collection.deleteOne({
-      username: socket.username,
-      room_id: socket.roomId,
-    });
+    const result = await deleteSessionByUsernameRoom(
+      username,
+      roomId
+    );
+
     console.log("exit_session", result);
   });
 
   socket.on("disconnect", async () => {
-    console.log("user disconnected", socket.username, socket.roomId);
+    console.log("user disconnected", username, roomId);
   });
 });
 

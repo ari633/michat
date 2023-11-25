@@ -61,6 +61,7 @@ const SocketProvider = ({ children }) => {
 
   const doDisconnect = useCallback(() => {
     socket.emit('exit_session');
+    setMessages([]);
     socket.disconnect();
   }, []);
 
