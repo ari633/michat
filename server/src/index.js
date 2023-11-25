@@ -76,7 +76,7 @@ io.use(async (socket, next) => {
 });
 
 app.get("/", async (req, res) => {
-  res.json({ message: "Ok", data: results });
+  res.json({ message: "Ok" });
 });
 
 io.on("connection", async (socket) => {

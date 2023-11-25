@@ -1,0 +1,35 @@
+services:
+  michat-client:
+    build:
+      context: ./client
+    environment:
+      - PORT=3100
+    ports:
+      - 3100:3100
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+      
+  michat-server:
+    build:
+      context: ./server
+    depends_on:
+      - michat-database
+    environment:
+      - MONGO_URI=mongodb://michat-database:27017
+      - MONGO_DB_NAME=michat
+    ports:
+      - 9090:9090
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+
+  michat-database:
+    image: mongo:6
+    volumes: 
+     - database:/data/db
+    ports:
+      - 27017:27017
+
+volumes:
+  database:
