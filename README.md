@@ -33,6 +33,7 @@ for the real-worl application for better development should use design system, d
 ### Plan to production
 - to make this application more reliable, scalable and available for 1000 user smoothly we can implement multiple nodes approach
 ![image](https://socket.io/images/multiple-nodes-no-sticky-dark.png)
+- Deploy server and client separately
 
 ### Security approach
 - use HTTPS to encrypt data transmitted between clients and the server.
