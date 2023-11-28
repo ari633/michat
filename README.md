@@ -1,5 +1,5 @@
-### Date of submission
-26 November 2023
+
+![Nov-28-2023 15-32-24](https://github.com/ari633/michat/assets/528036/1f347750-fae7-4c71-bb9f-39b0458b92ea)
 
 ### Live preview
 ```
@@ -21,19 +21,6 @@ after successfully running the application by using `docker compose`, there are 
 - 27017 is for the mongodb
 
 to view the application you can open `http://127.0.0.1:3100/` through your browser. to see the health check of the backend open `http://127.0.0.1:9090/`
-
-### Time spent
-- 1 hour to read documentaion of socket.io documentaion
-- 1 hour to read the documentation of Mongodb
-- 2 hours to develop frontend and backend
-
-### Assumptions
-This is an simple application chat with limited design and functionality.
-for the design i just follow the design guidlines, for the technical side that not mention in the guidelines i was use persistent session.
-persistent session is a generated unique ID to identify a user as the same person when the user closes the browser and comes back again to connect to the socket.
-
-### Shortcuts
-for the real-worl application for better development should use design system, design system is a collection of reusable components.
 
 ### Plan to production
 - to make this application more reliable, scalable and available for 1000 user smoothly we can implement multiple nodes approach
