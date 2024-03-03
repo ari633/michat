@@ -1,12 +1,14 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
-import { SocketContext } from "../context/socket";
+import React, { useState, useRef, useEffect } from "react";
 
-export function MyForm() {
+export function ChatForm({
+  messages,
+  disconnect,
+  doSendMessage,
+  username,
+  roomId,
+}) {
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  const { messages, doDisconnect, doSendMessage, username, roomId } =
-    useContext(SocketContext);
 
   const ref = useRef(null);
   useEffect(() => {
@@ -28,10 +30,6 @@ export function MyForm() {
     });
   }
 
-  function disconnect() {
-    localStorage.removeItem("sessionId");
-    doDisconnect();
-  }
 
   return (
     <>
@@ -72,7 +70,11 @@ export function MyForm() {
             onChange={(e) => setValue(e.target.value)}
             placeholder="Message here..."
           />
-          <button type="submit" disabled={isLoading || value === ''} className="button-send">
+          <button
+            type="submit"
+            disabled={isLoading || value === ""}
+            className="button-send"
+          >
             &#8679;
           </button>
         </div>

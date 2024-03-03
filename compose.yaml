@@ -2,6 +2,7 @@ services:
   michat-client:
     build:
       context: ./client
+      target: dev
     environment:
       - SOCKET_WS=ws://localhost:9090
       - PORT=3100
@@ -10,11 +11,12 @@ services:
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
-      - /usr/src/app/build
+      # - /usr/src/app/build
       
   michat-server:
     build:
       context: ./server
+      target: dev
     depends_on:
       - michat-database
     environment:

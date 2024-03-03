@@ -21,7 +21,7 @@ const SocketProvider = ({ children }) => {
 
     function onConnectError(e) {
       setErrorMsg(e.message);
-      console.log('Error', e.message);
+      console.error('Error Connect', e.message);
     }
 
     function onSession({sessionId, roomId, username, prevMessages}) {
@@ -34,6 +34,7 @@ const SocketProvider = ({ children }) => {
       }
 
       localStorage.setItem("sessionId", sessionId);
+      localStorage.setItem("roomId", roomId);
     }
 
     function onMessageRoom(value) {
@@ -59,10 +60,14 @@ const SocketProvider = ({ children }) => {
     socket.connect();
   }, []);
 
-  const doDisconnect = useCallback(() => {
-    socket.emit('exit_session');
-    setMessages([]);
-    socket.disconnect();
+  const doDisconnect = useCallback(async () => {
+    socket.emit('exit_session', (response) => {
+      if (response.status === 'ok') {
+        setMessages([]);
+        socket.disconnect();    
+      }
+    });
+
   }, []);
 
 
