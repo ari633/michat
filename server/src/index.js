@@ -8,10 +8,13 @@ import cors from "cors";
 import { registerUser } from "./handler/regiserUser";
 import { messages } from "./handler/messages";
 import { ioMiddleware } from "./middleware/ioMiddleware";
+import { connectToDatabase } from "./db/conn";
 
 const PORT = process.env.PORT || 9090;
 
 const app = express();
+connectToDatabase();
+
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
